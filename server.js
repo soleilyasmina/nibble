@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 
 require('./db');
+const api = require('./routes');
 
 const PORT = process.env.PORT || 3001;
 
@@ -12,9 +13,6 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(logger('dev'));
-
-app.get('/', (req, res) => {
-  res.send('Root route reached!');
-});
+app.use('/api', api);
 
 app.listen(PORT, () => console.log(`Listening on Port ${PORT}!`));
