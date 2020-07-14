@@ -5,7 +5,19 @@ All requests are prefaced by `/api`.
 
 ## Users
 
-`GET /users/:user_id/nibbles` gets all nibbles from a user with the id of `_id`
+`POST /auth/register` registers a user
+
+`POST /auth/login` logs a user in
+
+`PUT /auth/update` updates a user's information
+
+`DELETE /auth/remove` removes a user
+
+## Nibbles
+
+`GET /users/:user_id/nibbles` gets all nibbles from a user with the id of `user_id`
+
+`GET /users/:user_id/nibbles/:_id` gets a nibble with populated content
 
 `POST /users/:user_id/nibbles/` creates a new nibble
 
@@ -15,6 +27,5 @@ All requests are prefaced by `/api`.
 
 `DELETE /users/:user_id/nibbles/:_id` removes the nibble with the id of `_id`
 
-`GET /users/:user_id/nibbles/:_id` gets a nibble with populated content
 
 
