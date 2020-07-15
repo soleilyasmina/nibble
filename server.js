@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+require('dotenv').config();
 
 require('./db');
 const api = require('./routes');
