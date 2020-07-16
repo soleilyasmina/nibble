@@ -6,7 +6,7 @@ const {
 const userRouter = Router();
 
 userRouter.post('/register', register);
-userRouter.post('/login', (req, res) => res.json('Login reached!'));
+userRouter.post('/login', login);
 userRouter.put('/update', (req, res) => res.json('Update reached!'));
 userRouter.delete('/remove', (req, res) => res.json('Remove reached!'));
 

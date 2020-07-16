@@ -1,9 +1,9 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
+const { createToken } = require('../helpers');
 const User = require('../models/user');
 
-const { SALT_ROUNDS, SECRET } = process.env;
+const { SALT_ROUNDS } = process.env;
 
 const register = async (req, res) => {
   try {
@@ -25,7 +25,7 @@ const register = async (req, res) => {
 
     const { nibbles, ...payload } = userInfo;
 
-    const token = jwt.sign(payload, SECRET);
+    const token = createToken(payload);
 
     return res.status(201).json({ user: userInfo, token });
   } catch (e) {
@@ -35,9 +35,24 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+    if (await bcrypt.compare(password, user.password_digest)) {
+      const userInfo = {
+        username: user.username,
+        email: user.email,
+        nibbles: user.nibbles,
+        id: user._id,
+      };
 
+      const { nibbles, ...payload } = userInfo;
+      const token = createToken(payload);
+
+      return res.status(200).json({ user: userInfo, token });
+    }
+    return res.status(401).json({ error: 'Not authorized!' });
   } catch (e) {
-
+    return res.status(401).json({ error: 'Not authorized!' });
   }
 };
 

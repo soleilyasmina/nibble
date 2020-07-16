@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 
 const { SECRET } = process.env;
 
+const createToken = (payload) => jwt.sign(payload, SECRET);
+
 const restrict = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
@@ -13,4 +15,7 @@ const restrict = async (req, res, next) => {
   }
 };
 
-module.exports = restrict;
+module.exports = {
+  createToken,
+  restrict,
+};
