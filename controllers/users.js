@@ -44,10 +44,8 @@ const login = async (req, res) => {
         nibbles: user.nibbles,
         id: user._id,
       };
-
       const { nibbles, ...payload } = userInfo;
       const token = createToken(payload);
-
       return res.status(200).json({ user: userInfo, token });
     }
     return res.status(401).json({ error: 'Not authorized!' });
@@ -56,9 +54,28 @@ const login = async (req, res) => {
   }
 };
 
+const verify = async (req, res) => {
+  try {
+    const user = await User.findOne({ username: res.locals.user.username });
+    const {
+      username, email, _id, nibbles,
+    } = user;
+
+    const userInfo = {
+      username,
+      email,
+      _id,
+      nibbles,
+    };
+    return res.status(200).json({ user: userInfo });
+  } catch (e) {
+    return res.status(401).json({ error: e.message });
+  }
+};
+
 const update = async (req, res) => {
   try {
-
+    
   } catch (e) {
 
   }
@@ -75,6 +92,7 @@ const remove = async (req, res) => {
 module.exports = {
   register,
   login,
+  verify,
   update,
   remove,
 };
