@@ -3,17 +3,14 @@ const bcrypt = require('bcrypt');
 const { createToken } = require('../helpers');
 const User = require('../models/user');
 
-const { SALT_ROUNDS } = process.env;
-
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    const passwordDigest = await bcrypt.hash(password, parseInt(SALT_ROUNDS, 10));
 
     const user = await User.create({
       username,
       email,
-      password_digest: passwordDigest,
+      password_digest: password,
     });
 
     const userInfo = {
@@ -74,11 +71,22 @@ const verify = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  try {
-    
-  } catch (e) {
-
-  }
+  const { id } = res.locals.user;
+  await User.findByIdAndUpdate(id, req.body, { new: true, runValidators: true }, (err, user) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    if (!user) {
+      return res.status(404).json({ error: 'No user found!' });
+    }
+    const userInfo = {
+      username: user.username,
+      email: user.email,
+      nibbles: user.nibbles,
+      id: user._id,
+    };
+    res.status(200).json({ user: userInfo });
+  });
 };
 
 const remove = async (req, res) => {
