@@ -10,6 +10,7 @@ const userSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password_digest: { type: String, required: true, min: [6, 'Password too short!'] },
     nibbles: [{ type: Schema.Types.ObjectId, ref: 'nibbles' }],
+    active: { type: Boolean, required: true, default: true },
   },
   { timestamps: true },
 );

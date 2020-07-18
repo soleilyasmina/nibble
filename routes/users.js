@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const {
-  register, login, verify, update, remove
+  register, login, verify, update, deactivate
 } = require('../controllers/users');
 const { restrict } = require('../helpers');
 
@@ -10,6 +10,6 @@ userRouter.post('/register', register);
 userRouter.post('/login', login);
 userRouter.get('/verify', restrict, verify);
 userRouter.put('/update', restrict, update);
-userRouter.delete('/remove', (req, res) => res.json('Remove reached!'));
+userRouter.delete('/deactivate', restrict, deactivate); 
 
 module.exports = userRouter;

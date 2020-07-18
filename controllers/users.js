@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 
 const { createToken } = require('../helpers');
+const { createUserInfoAndPayload } = require('../helpers/user');
 const User = require('../models/user');
 
 const register = async (req, res) => {
@@ -18,6 +19,7 @@ const register = async (req, res) => {
       username,
       email,
       nibbles: [],
+      active: true
     };
 
     const { nibbles, ...payload } = userInfo;
@@ -35,13 +37,7 @@ const login = async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
     if (await bcrypt.compare(password, user.password_digest)) {
-      const userInfo = {
-        username: user.username,
-        email: user.email,
-        nibbles: user.nibbles,
-        id: user._id,
-      };
-      const { nibbles, ...payload } = userInfo;
+      const { payload, userInfo } = createUserInfoAndPayload(user);
       const token = createToken(payload);
       return res.status(200).json({ user: userInfo, token });
     }
@@ -54,16 +50,7 @@ const login = async (req, res) => {
 const verify = async (req, res) => {
   try {
     const user = await User.findOne({ username: res.locals.user.username });
-    const {
-      username, email, _id, nibbles,
-    } = user;
-
-    const userInfo = {
-      username,
-      email,
-      _id,
-      nibbles,
-    };
+    const { userInfo } = createUserInfoAndPayload(user);
     return res.status(200).json({ user: userInfo });
   } catch (e) {
     return res.status(401).json({ error: e.message });
@@ -79,22 +66,25 @@ const update = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'No user found!' });
     }
-    const userInfo = {
-      username: user.username,
-      email: user.email,
-      nibbles: user.nibbles,
-      id: user._id,
-    };
-    res.status(200).json({ user: userInfo });
+    const { payload, userInfo } = createUserInfoAndPayload(user);
+    const token = createToken(payload);
+    res.status(200).json({ user: userInfo, token });
   });
 };
 
-const remove = async (req, res) => {
-  try {
-
-  } catch (e) {
-
-  }
+const deactivate = async (req, res) => {
+  const { id } = res.locals.user;
+  await User.findByIdAndUpdate(id, { active: false }, { new: true }, (err, user) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    if (!user) {
+      return res.status(404).json({ error: 'No user found!' });
+    }
+    const { payload, userInfo } = createUserInfoAndPayload(user);
+    const token = createToken(payload);
+    res.status(200).json({ user: userInfo, token });
+  });
 };
 
 module.exports = {
@@ -102,5 +92,5 @@ module.exports = {
   login,
   verify,
   update,
-  remove,
+  deactivate,
 };
