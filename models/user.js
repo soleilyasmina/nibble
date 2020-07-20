@@ -15,7 +15,7 @@ const userSchema = new Schema(
   { timestamps: true },
 );
 
-userSchema.pre('save', function () {
+userSchema.pre('save', function (next) {
   if (!this.isModified('password_digest')) return next();
   this.password_digest = hashSync(this.password_digest, parseInt(SALT_ROUNDS, 10));
   next();
@@ -23,7 +23,6 @@ userSchema.pre('save', function () {
 
 userSchema.pre('findOneAndUpdate', async function () {
   const doc = await this.model.findOne(this.getQuery());
-
   if (this._update.password_digest && doc.password_digest !== this._update.password_digest) {
     this._update.password_digest = hashSync(this._update.password_digest, parseInt(SALT_ROUNDS, 10));
   }
