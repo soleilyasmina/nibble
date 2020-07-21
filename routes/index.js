@@ -5,7 +5,7 @@ const userRouter = require('./users');
 
 const api = Router();
 
-api.use('/users/:user_id/nibbles', nibbleRouter);
+api.use('/nibbles', nibbleRouter);
 api.use('/auth', userRouter);
 
 api.get('/', (req, res) => {

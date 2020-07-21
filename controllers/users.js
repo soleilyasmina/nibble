@@ -4,6 +4,7 @@ const { createToken } = require('../helpers');
 const { createUserInfoAndPayload } = require('../helpers/user');
 const User = require('../models/user');
 
+// POST /register
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -32,6 +33,7 @@ const register = async (req, res) => {
   }
 };
 
+// POST /login
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -47,6 +49,7 @@ const login = async (req, res) => {
   }
 };
 
+// GET /verify
 const verify = async (req, res) => {
   try {
     const user = await User.findOne({ username: res.locals.user.username });
@@ -57,6 +60,7 @@ const verify = async (req, res) => {
   }
 };
 
+// PUT /update
 const update = async (req, res) => {
   const { id } = res.locals.user;
   await User.findByIdAndUpdate(id, req.body, { new: true, runValidators: true }, (err, user) => {
@@ -72,6 +76,7 @@ const update = async (req, res) => {
   });
 };
 
+// DELETE /deactivate
 const deactivate = async (req, res) => {
   const { id } = res.locals.user;
   await User.findByIdAndUpdate(id, { active: false }, { new: true }, (err, user) => {

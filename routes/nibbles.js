@@ -1,12 +1,18 @@
 const { Router } = require('express');
 
+const {
+  allNibbles, myNibbles, oneNibble, newNibble, newBite, updateNibble, deleteNibble,
+} = require('../controllers/nibbles');
+const { restrict } = require('../helpers');
+
 const nibbleRouter = Router();
 
-nibbleRouter.get('/', (req, res) => res.json('All nibbles reached!'));
-nibbleRouter.get('/:id', (req, res) => res.json('One nibble reached!'));
-nibbleRouter.post('/', (req, res) => res.json('New nibble reached!'));
-nibbleRouter.post('/:id', (req, res) => res.json('New bite reached!'));
-nibbleRouter.put('/:id', (req, res) => res.json('Update nibble reached!'));
-nibbleRouter.delete('/:id', (req, res) => res.json('Remove nibble reached!'));
+nibbleRouter.get('/users/:user_id', restrict, allNibbles);
+nibbleRouter.get('/', restrict, myNibbles);
+nibbleRouter.get('/:nibble_id', restrict, oneNibble);
+nibbleRouter.post('/', restrict, newNibble);
+nibbleRouter.post('/:nibble_id', restrict, newBite);
+nibbleRouter.put('/:nibble_id', restrict, updateNibble);
+nibbleRouter.delete('/:nibble_id', restrict, deleteNibble);
 
 module.exports = nibbleRouter;
