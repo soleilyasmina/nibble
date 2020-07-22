@@ -3,9 +3,9 @@ const { model, Schema } = require('mongoose');
 const nibbleSchema = new Schema(
   {
     user_id: { type: Schema.Types.ObjectId, ref: 'users' },
-    content: { type: String, required: true },
-    path: { type: String, default: ',', required: true },
-    contentPath: { type: String, default: ',', required: true },
+    content: { type: String, default: '' },
+    ancestors: [{ type: Schema.Types.ObjectId, default: [], required: true }],
+    contentAncestors: [{ type: Schema.Types.ObjectId, default: [], required: true }],
   },
   { timestamps: true },
 );
