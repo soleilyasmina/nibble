@@ -5,6 +5,7 @@ const createUsers = async () => {
   await User.create({
     username: 'bigbite',
     email: 'bigbite@email.com',
+    password_digest: 'honkletons',
   });
 };
 
