@@ -18,7 +18,11 @@ const allNibbles = async (req, res) => {
 const myNibbles = async (req, res) => {
   try {
     const { id } = res.locals.user;
-    return res.status(200).json('Reached!');
+    const nibbles = await Nibble
+      .find({ user_id: id })
+      .populate('ancestors')
+      .populate('contentAncestors');
+    return res.status(200).json({ nibbles });
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
@@ -27,7 +31,11 @@ const myNibbles = async (req, res) => {
 // GET /nibbles/:nibble_id
 const oneNibble = async (req, res) => {
   try {
-    return res.status(200).json('Reached!');
+    const nibble = await Nibble
+      .findById(req.params.nibble_id)
+      .populate('ancestors')
+      .populate('contentAncestors');
+    return res.status(200).json({ nibble });
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
@@ -70,7 +78,15 @@ const newBite = async (req, res) => {
 // PUT /nibbles/:nibble_id
 const updateNibble = async (req, res) => {
   try {
-    return res.status(200).json('Reached!');
+    await Nibble.findByIdAndUpdate(req.params.nibble_id, req.body, { new: true, validate: true }, (err, nibble) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      if (!nibble) {
+        return res.status(404).json({ error: 'Nibble not found!' });
+      }
+      res.status(200).json({ nibble });
+    });
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
