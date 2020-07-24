@@ -47,7 +47,7 @@ const newNibble = async (req, res) => {
     const nibble = await Nibble.create({ ...req.body, user_id: res.locals.user.id });
     const user = await User.findById(res.locals.user.id);
     user.nibbles.push(nibble._id);
-    return res.status(200).json({ nibble });
+    return res.status(201).json({ nibble });
   } catch (e) {
     return res.status(422).json({ error: e.message });
   }
@@ -69,7 +69,7 @@ const newBite = async (req, res) => {
     const user = await User.findById(res.locals.user.id);
     user.nibbles.push(createdBite._id);
     await user.save();
-    return res.status(200).json(createdBite);
+    return res.status(201).json(createdBite);
   } catch (e) {
     return res.status(422).json({ error: e.message });
   }
@@ -78,7 +78,8 @@ const newBite = async (req, res) => {
 // PUT /nibbles/:nibble_id
 const updateNibble = async (req, res) => {
   try {
-    await Nibble.findByIdAndUpdate(req.params.nibble_id, req.body, { new: true, validate: true }, (err, nibble) => {
+    const { nibble_id: id } = req.params;
+    await Nibble.findByIdAndUpdate(id, req.body, { new: true, validate: true }, (err, nibble) => {
       if (err) {
         return res.status(500).json({ error: err.message });
       }
@@ -95,6 +96,16 @@ const updateNibble = async (req, res) => {
 // DELETE /nibbles/:nibble_id
 const deleteNibble = async (req, res) => {
   try {
+    const { nibble_id: id } = req.params;
+    await Nibble.findByIdAndDelete(id, (err, nibble) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      if (!nibble) {
+        return res.status(404).json({ error: 'Nibble not found!' });
+      }
+      res.status(204).json({ nibble });
+    });
     return res.status(200).json('Reached!');
   } catch (e) {
     return res.status(500).json({ error: e.message });

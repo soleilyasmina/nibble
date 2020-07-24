@@ -14,6 +14,6 @@ nibbleRouter.get('/:nibble_id', restrict, oneNibble);
 nibbleRouter.post('/', restrict, newNibble);
 nibbleRouter.post('/:nibble_id', restrict, newBite);
 nibbleRouter.put('/:nibble_id', restrict, modifiable, updateNibble);
-nibbleRouter.delete('/:nibble_id', restrict, deleteNibble);
+nibbleRouter.delete('/:nibble_id', restrict, modifiable, deleteNibble);
 
 module.exports = nibbleRouter;
