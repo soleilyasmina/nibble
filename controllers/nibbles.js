@@ -44,7 +44,7 @@ const newNibble = async (req, res) => {
   try {
     const nibble = await Nibble.create({ ...req.body, user_id: res.locals.user.id });
     const user = await User.findById(res.locals.user.id);
-    user.nibbles.push(nibble._id);
+    user.nibbles.push(nibble.id);
     return res.status(201).json({ nibble });
   } catch (e) {
     return res.status(422).json({ error: e.message });
@@ -62,10 +62,11 @@ const newBite = async (req, res) => {
       contentAncestors: nibble.content
         ? [...nibble.contentAncestors, nibble.id]
         : nibble.contentAncestors,
+      parent: nibble.id,
     };
     const createdBite = await Nibble.create(bite);
     const user = await User.findById(res.locals.user.id);
-    user.nibbles.push(createdBite._id);
+    user.nibbles.push(createdBite.id);
     await user.save();
     return res.status(201).json(createdBite);
   } catch (e) {

@@ -6,13 +6,14 @@ const nibbleSchema = new Schema(
     content: { type: String, default: '' },
     ancestors: [{ type: Schema.Types.ObjectId, default: [], required: true, index: true }],
     contentAncestors: [{ type: Schema.Types.ObjectId, default: [], required: true }],
+    parent: { type: Schema.Types.ObjectId, default: null },
   },
   { timestamps: true },
 );
 
 nibbleSchema.methods.tree = function tree() {
   let source;
-  if (!this.ancestors.length) {
+  if (!this.parent) {
     source = this.id;
   } else {
     source = this.ancestors[0].id;
