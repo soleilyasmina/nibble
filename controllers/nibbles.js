@@ -6,7 +6,6 @@ const allNibbles = async (req, res) => {
   try {
     const nibbles = await Nibble
       .find({ user_id: req.params.user_id })
-      .populate('ancestors')
       .populate('contentAncestors');
     return res.status(200).json({ nibbles });
   } catch (e) {
@@ -20,7 +19,6 @@ const myNibbles = async (req, res) => {
     const { id } = res.locals.user;
     const nibbles = await Nibble
       .find({ user_id: id })
-      .populate('ancestors')
       .populate('contentAncestors');
     return res.status(200).json({ nibbles });
   } catch (e) {
@@ -33,9 +31,9 @@ const oneNibble = async (req, res) => {
   try {
     const nibble = await Nibble
       .findById(req.params.nibble_id)
-      .populate('ancestors')
       .populate('contentAncestors');
-    return res.status(200).json({ nibble });
+    const history = await nibble.tree();
+    return res.status(200).json({ nibble, history });
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
