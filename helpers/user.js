@@ -10,6 +10,8 @@ const createUserInfoAndPayload = (user) => ({
     email: user.email,
     nibbles: user.nibbles,
     username: user.username,
+    following: user.following,
+    blocking: user.blocking,
   },
 });
 

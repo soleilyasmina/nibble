@@ -20,7 +20,9 @@ const register = async (req, res) => {
       username,
       email,
       nibbles: [],
-      active: true
+      following: [],
+      blocking: [],
+      active: true,
     };
 
     const { nibbles, ...payload } = userInfo;

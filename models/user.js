@@ -11,17 +11,23 @@ const userSchema = new Schema(
     password_digest: { type: String, required: true, min: [6, 'Password too short!'] },
     nibbles: [{ type: Schema.Types.ObjectId, ref: 'nibbles' }],
     active: { type: Boolean, required: true, default: true },
+    following: [{ type: Schema.Types.ObjectId, default: [] }],
+    blocking: [{ type: Schema.Types.ObjectId, default: [] }],
   },
   { timestamps: true },
 );
 
-userSchema.pre('save', function (next) {
+userSchema.methods.followers = function followers() {
+  return model('users').find({ following: this.id }, { id: 1, username: 1 }).lean();
+};
+
+userSchema.pre('save', function hash(next) {
   if (!this.isModified('password_digest')) return next();
   this.password_digest = hashSync(this.password_digest, parseInt(SALT_ROUNDS, 10));
   next();
 });
 
-userSchema.pre('findOneAndUpdate', async function () {
+userSchema.pre('findOneAndUpdate', async function hash() {
   const doc = await this.model.findOne(this.getQuery());
   if (this._update.password_digest && doc.password_digest !== this._update.password_digest) {
     this._update.password_digest = hashSync(this._update.password_digest, parseInt(SALT_ROUNDS, 10));
