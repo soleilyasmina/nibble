@@ -1,7 +1,7 @@
 const { Router } = require('express');
 
 const {
-  allNibbles, myNibbles, oneNibble, newNibble, newBite, updateNibble, deleteNibble,
+  allNibbles, myNibbles, oneNibble, newNibble, newBite, updateNibble, deleteNibble, followingNibbles,
 } = require('../controllers/nibbles');
 const { restrict } = require('../helpers');
 const { modifiable } = require('../helpers/nibble');
@@ -10,6 +10,7 @@ const nibbleRouter = Router();
 
 nibbleRouter.get('/users/:user_id', restrict, allNibbles);
 nibbleRouter.get('/', restrict, myNibbles);
+nibbleRouter.get('/following', restrict, followingNibbles);
 nibbleRouter.get('/:nibble_id', restrict, oneNibble);
 nibbleRouter.post('/', restrict, newNibble);
 nibbleRouter.post('/:nibble_id', restrict, newBite);

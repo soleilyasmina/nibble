@@ -26,6 +26,25 @@ const myNibbles = async (req, res) => {
   }
 };
 
+const followingNibbles = async (req, res) => {
+  try {
+    const { id } = res.locals.user;
+    const user = await User.findById(id);
+    if (!user) {
+      res.status(404).json({ error: 'No user found!' });
+    }
+    const nibbles = await Nibble
+      .find()
+      .where('user_id').in(user.following)
+      .sort('-createdAt')
+      .limit(50)
+      .populate('contentAncestors');
+    return res.status(200).json({ nibbles });
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+};
+
 // GET /nibbles/:nibble_id
 const oneNibble = async (req, res) => {
   try {
@@ -114,6 +133,7 @@ const deleteNibble = async (req, res) => {
 module.exports = {
   allNibbles,
   myNibbles,
+  followingNibbles,
   oneNibble,
   newNibble,
   newBite,
