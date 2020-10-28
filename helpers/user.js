@@ -1,3 +1,5 @@
+const User = require('../models/user');
+
 const createUserInfoAndPayload = (user) => ({
   payload: {
     id: user._id,
@@ -15,6 +17,15 @@ const createUserInfoAndPayload = (user) => ({
   },
 });
 
+const canViewUser = async (req, res, next) => {
+  const user = await User.findById(res.locals.user.id);
+  if (user.isBlocked(req.params.user_id)) {
+    return res.status(400).json({ error: 'Cannot view.' });
+  }
+  return next();
+};
+
 module.exports = {
   createUserInfoAndPayload,
+  canViewUser,
 };

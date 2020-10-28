@@ -21,6 +21,10 @@ userSchema.methods.followers = function followers() {
   return model('users').find({ following: this.id }, { id: 1, username: 1 }).lean();
 };
 
+userSchema.methods.isBlocked = function isBlocked(id) {
+  return model('users').count({ _id: id, blocking: id }) > 0;
+};
+
 userSchema.pre('save', function hash(next) {
   if (!this.isModified('password_digest')) return next();
   this.password_digest = hashSync(this.password_digest, parseInt(SALT_ROUNDS, 10));

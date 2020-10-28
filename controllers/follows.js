@@ -61,6 +61,9 @@ const block = async (req, res) => {
     if (blocker.blocking.includes(user_id)) {
       return res.status(400).json({ error: 'Already blocked!' });
     }
+    await User.findById(user_id, {
+      following: blocking.following.filter((f) => f.toString() !== user_id),
+    });
     await User.findByIdAndUpdate(id, {
       blocking: [...blocker.blocking, user_id],
       following: blocker.following.filter((f) => f.toString() !== user_id), 
