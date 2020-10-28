@@ -21,9 +21,6 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "eslint": "7.1.0",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.21.2",
     "nodemon": "^2.0.4"
   }
 }
