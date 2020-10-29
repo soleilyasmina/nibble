@@ -46,7 +46,7 @@ const followingNibbles = async (req, res) => {
       .populate({
         path: "parent",
         populate: { path: "user_id", select: "username" }
-      })
+      });
     return res.status(200).json({ nibbles });
   } catch (e) {
     return res.status(500).json({ error: e.message });
