@@ -6,6 +6,7 @@ import { followingNibbles } from "./services/nibbles";
 import { verify } from "./services/users";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
+import SiteNav from "./Nav";
 import Plate from "./Plate";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
 
   return (
     <div className="App">
+      <SiteNav user={user} />
       <Container>
         <Route path="/login">
           <Login setUser={setUser} />
