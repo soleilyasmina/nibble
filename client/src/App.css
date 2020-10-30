@@ -1,0 +1,11 @@
+.nav-options {
+  top: 47px;
+  width: 193px;
+}
+
+@media screen and (max-width: 768px) {
+  .nav-options {
+    top: 111px;
+    width: 92%;
+  }
+}
