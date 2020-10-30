@@ -31,7 +31,7 @@ function App() {
           <Login setUser={setUser} />
         </Route>
         <Route path="/dashboard">
-          <Dashboard user={user} following={following} setToggleFollowing={setToggleFollowing} /> 
+          <Dashboard user={user} setUser={setUser} following={following} setToggleFollowing={setToggleFollowing} /> 
         </Route>
       </Container>
     </div>

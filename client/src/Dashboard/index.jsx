@@ -14,25 +14,25 @@ const Dashboard = (props) => {
   }
 
   return (
-    <Container className="mt-2" md={{ span: 2, offset: 0 }}>
-      <Form onSubmit={newNibble} >
-        <Form.Row className="justify-content-end align-items-center">
-          <Col xs="auto">
-            <Form.Label className="mt-2">Content:</Form.Label>
-          </Col>
-          <Col>
-            <Form.Control type="content" placeholder="Enter content:" value={content} onChange={(e) => setContent(e.target.value)} />
-          </Col>
-          <Col xs="auto">
-            <Button variant="primary" type="submit">Nibble</Button>
-          </Col>
-        </Form.Row>
-      </Form>
+    <>
+      <Container className="mt-2" md={{ span: 2, offset: 0 }}>
+        <Form onSubmit={newNibble} >
+          <Form.Row className="justify-content-end align-items-center">
+            
+            <Col>
+              <Form.Control type="content" placeholder="Enter content:" value={content} onChange={(e) => setContent(e.target.value)} />
+            </Col>
+            <Col xs="auto">
+              <Button className="font-weight-bold" variant="primary" type="submit">Nibble</Button>
+            </Col>
+          </Form.Row>
+        </Form>
 
-      {props.following.map((n) => (
-        <Nibble n={n} setToggleFollowing={props.setToggleFollowing} />
-      ))}
-    </Container>
+        {props.following.map((n) => (
+          <Nibble user={props.user} setUser={props.setUser} n={n} setToggleFollowing={props.setToggleFollowing} />
+        ))}
+      </Container>
+    </>
   )
 }
 
