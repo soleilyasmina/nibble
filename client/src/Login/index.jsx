@@ -7,7 +7,6 @@ const Login = (props) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState(null);
   const [isLogin, setIsLogin] = useState(true);
 
   const history = useHistory();
@@ -20,7 +19,7 @@ const Login = (props) => {
       localStorage.setItem('token', resp.data.token);
       history.push('/dashboard');
     } catch (e) {
-      setErrorMessage('Incorrect username or password!');
+      console.log(e);
     }
   }
 
@@ -32,7 +31,7 @@ const Login = (props) => {
       localStorage.setItem('token', resp.data.token);
       history.push('/dashboard');
     } catch (e) {
-      setErrorMessage('Incorrect username or password!');
+      console.log(e);
     }
   }
 

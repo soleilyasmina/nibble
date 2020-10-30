@@ -4,9 +4,19 @@ const User = require("../models/user");
 // GET /nibbles/users/:user_id
 const allNibbles = async (req, res) => {
   try {
-    const nibbles = await Nibble.find({ user_id: req.params.user_id }).populate(
-      "contentAncestors"
-    );
+    const nibbles = await Nibble
+      .find({ user_id: req.params.user_id })
+      .sort("-createdAt")
+      .limit(50)
+      .populate({ path: "user_id", select: "username" })
+      .populate({
+        path: "contentAncestors",
+        populate: { path: "user_id", select: "username" }
+      })
+      .populate({
+        path: "parent",
+        populate: { path: "user_id", select: "username" }
+      });
     return res.status(200).json({ nibbles });
   } catch (e) {
     return res.status(500).json({ error: e.message });

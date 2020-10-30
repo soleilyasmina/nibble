@@ -24,3 +24,21 @@ export const followingNibbles = async () => {
     console.log(e);
   }
 };
+
+export const allNibbles = async (user_id) => {
+  try {
+    const resp = await api.get(`/nibbles/users/${user_id}`, createHeaders());
+    return resp.data.nibbles;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export const myNibbles = async () => {
+  try {
+    const resp = await api.get("/nibbles", createHeaders());
+    return resp.data.nibbles;
+  } catch (e) {
+    console.log(e);
+  }
+}

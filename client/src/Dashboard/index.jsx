@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button, Card, Col, Container, Form, ListGroupItem, Row } from 'react-bootstrap';
+import { Button,  Col, Container, Form } from 'react-bootstrap';
 import { createNibble } from "../services/nibbles";
-import Nibble from "../shared/Nibble";
+import Nibbles from "../shared/Nibbles";
 
 const Dashboard = (props) => {
   const [content, setContent] = useState('');
@@ -18,7 +18,6 @@ const Dashboard = (props) => {
       <Container className="mt-2" md={{ span: 2, offset: 0 }}>
         <Form onSubmit={newNibble} >
           <Form.Row className="justify-content-end align-items-center">
-            
             <Col>
               <Form.Control type="content" placeholder="Enter content:" value={content} onChange={(e) => setContent(e.target.value)} />
             </Col>
@@ -28,9 +27,7 @@ const Dashboard = (props) => {
           </Form.Row>
         </Form>
 
-        {props.following.map((n) => (
-          <Nibble user={props.user} setUser={props.setUser} n={n} setToggleFollowing={props.setToggleFollowing} />
-        ))}
+        <Nibbles posts={props.following} user={props.user} setUser={props.setUser} setToggleFollowing={props.setToggleFollowing}/> 
       </Container>
     </>
   )

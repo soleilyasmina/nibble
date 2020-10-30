@@ -6,6 +6,7 @@ import { followingNibbles } from "./services/nibbles";
 import { verify } from "./services/users";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
+import Plate from "./Plate";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -32,6 +33,9 @@ function App() {
         </Route>
         <Route path="/dashboard">
           <Dashboard user={user} setUser={setUser} following={following} setToggleFollowing={setToggleFollowing} /> 
+        </Route>
+        <Route path="/users/:user_id">
+          <Plate user={user} setUser={setUser} setToggleFollowing={setToggleFollowing} />
         </Route>
       </Container>
     </div>

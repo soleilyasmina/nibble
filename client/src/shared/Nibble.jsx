@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Card, Col, Form, ListGroupItem, Row } from "react-bootstrap";
 import { follow, unfollow } from "../services/follows";
 import { createBite } from "../services/nibbles";
+import UserLink from "./UserLink.jsx";
 
 const Nibble = (props) => {
   const [content, setContent] = useState('');
@@ -42,19 +43,26 @@ const Nibble = (props) => {
     <Row>
       <Col>
         <Card className="mt-2 mb-2">
-          <Card.Header className="font-weight-bold d-flex align-items-center md-4">
+          <Card.Header className="d-flex align-items-center md-4">
             {n.parent
-              ? `${n.user_id.username} << ${n.parent.user_id.username}`
+              ? (
+                <>
+
+                  <UserLink linkedUser={n} />
+                  <i className="ml-2 mr-2 fa fa-cookie-bite"></i>
+                  <UserLink linkedUser={n.parent} />
+                </>
+              )
               : (
                 <>
-                  {n.user_id.username}
+                  <UserLink linkedUser={n} />
                   {followMessage(n, true)}
                 </>
               )}
           </Card.Header>
           {n.contentAncestors.map((ca) => (
             <ListGroupItem>
-              <span className="d-inline font-weight-bold">{ca.user_id.username}</span>
+              <UserLink linkedUser={ca} />
               {followMessage(ca, false)}
               <span className="d-block">{ca.content}</span>
             </ListGroupItem>
@@ -63,7 +71,7 @@ const Nibble = (props) => {
             <ListGroupItem>
               {n.parent !== null && (
                 <>
-                  <span className="d-inline font-weight-bold">{n.user_id.username}</span>
+                  <UserLink linkedUser={n} />
                 </>
               )}
               <span className="d-block">{n.content}</span>
