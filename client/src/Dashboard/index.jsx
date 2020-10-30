@@ -8,9 +8,11 @@ const Dashboard = (props) => {
 
   const newNibble = async (e) => {
     e.preventDefault();
-    await createNibble({ content });
-    props.setToggleFollowing(prev => !prev);
-    setContent('');
+    if (content) {
+      await createNibble({ content });
+      props.setToggleFollowing(prev => !prev);
+      setContent('');
+    }
   }
 
   return (
