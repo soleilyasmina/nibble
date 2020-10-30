@@ -8,3 +8,12 @@ export const verify = async () => {
     console.log(e);
   }
 }
+
+export const search = async (query) => {
+  try {
+    const resp = await api.post('/users/search', { query }, createHeaders());
+    return resp.data.users;
+  } catch (e) {
+    console.log(e);
+  }
+}

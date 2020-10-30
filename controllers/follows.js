@@ -103,9 +103,20 @@ const unblock = async (req, res) => {
   }
 };
 
+const search = async (req, res) => {
+  try {
+    const { query } = req.body;
+    const users = await User.find({ username: new RegExp(query) }, { id: 1, username: 1 });
+    return res.status(200).json({ users });
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+}
+
 module.exports = {
   follow,
   unfollow,
   block,
   unblock,
+  search,
 };

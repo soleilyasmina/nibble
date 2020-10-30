@@ -1,10 +1,26 @@
 import { useEffect, useState } from "react";
-import { Button, Form, FormControl, Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Form, FormControl, ListGroup, ListGroupItem, Nav, Navbar } from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom";
+import { search } from "../services/users";
 
 const SiteNav = (props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchOptions, setSearchOptions] = useState([]);
+  const location = useLocation();
+
+  useEffect(() => {
+    setSearchQuery('');
+  }, [location]);
+
+  useEffect(() => {
+    if (searchQuery) {
+      (async () => {
+        setSearchOptions(await search(searchQuery));
+      })();
+    } else {
+      setSearchOptions([]);
+    }
+  }, [searchQuery]);
 
   return (
     <Navbar sticky="top" bg="light" expand="md">
@@ -16,7 +32,15 @@ const SiteNav = (props) => {
         </Nav>
         <Form inline>
           <FormControl value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}type="text" placeholder="Search" className="mr-sm-2" />
-          <Button variant="outline-secondary">Search</Button>
+          <ListGroup className="position-absolute" style={{ top: '47px', width: '193px' }}>
+            {searchOptions.map((opt, i) => (
+              <ListGroupItem>
+                <Link className="font-weight-bold text-dark" to={`/users/${opt._id}`}>
+                  {opt.username}
+                </Link>
+              </ListGroupItem>
+            ))}
+          </ListGroup>
         </Form>
       </Navbar.Collapse>
     </Navbar>
