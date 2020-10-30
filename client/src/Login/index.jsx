@@ -52,7 +52,7 @@ const Login = (props) => {
                     <Form.Control type="password" placeholder="Enter password:" value={password} onChange={(e) => setPassword(e.target.value)} />
                   </Form.Group>
                   <Button variant="primary" type="submit">Login</Button>
-                  <Button variant="secondary" onClick={() => setIsLogin(false)}>Register</Button>
+                  <Button variant="secondary" className="ml-2" onClick={() => setIsLogin(false)}>Sign Up</Button>
                 </Form>
               </Col>
             ) :
@@ -72,7 +72,7 @@ const Login = (props) => {
                   <Form.Control type="password" placeholder="Enter password:" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
                 <Button variant="primary" type="submit">Register</Button>
-                <Button variant="secondary" onClick={() => setIsLogin(true)}>Login</Button>
+                <Button variant="secondary" className="ml-2" onClick={() => setIsLogin(true)}>Sign In</Button>
               </Form>
             </Col>
           )

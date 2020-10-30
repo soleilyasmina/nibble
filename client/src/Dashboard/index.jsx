@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button,  Col, Container, Form } from 'react-bootstrap';
+import { Button,  Col, Container, Form } from "react-bootstrap";
 import { createNibble } from "../services/nibbles";
 import Nibbles from "../shared/Nibbles";
 
@@ -27,7 +27,7 @@ const Dashboard = (props) => {
           </Form.Row>
         </Form>
 
-        <Nibbles posts={props.following} user={props.user} setUser={props.setUser} setToggleFollowing={props.setToggleFollowing}/> 
+        <Nibbles posts={props.following} user={props.user} setUser={props.setUser} setToggleFollowing={props.setToggleFollowing}/>
       </Container>
     </>
   )

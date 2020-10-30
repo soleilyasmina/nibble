@@ -24,20 +24,37 @@ const SiteNav = (props) => {
     }
   }, [searchQuery]);
 
+  const logout = async () => {
+    localStorage.removeItem('token');
+    props.setUser(null);
+  }
+
+  const homeLink = props.user ? '/dashboard' : '/login';
+
   return (
-    <Navbar sticky="top" bg="light" expand="md" expanded={expanded} onToggle={(e) => setExpanded(e)}>
-      <Navbar.Brand><Link className="text-dark" to="/dashboard">Nibble</Link></Navbar.Brand>
+    <Navbar sticky="top" bg="light" expand="sm" expanded={expanded} onToggle={(e) => setExpanded(e)}>
+      <Navbar.Brand><Link className="text-dark" to={homeLink}>Nibble</Link></Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Link className="text-secondary mb-2 mb-md-0" to={`/users/${props.user && props.user.id}`}>My Plate</Link>
+          {
+            props.user
+              ? (
+                <>
+                  <Link className="text-secondary mb-2 mb-sm-0" to={`/users/${props.user && props.user.id}`}>My Plate</Link>
+                  <Link className="text-secondary mb-2 mb-sm-0 ml-0 ml-sm-2" onClick={logout} to={'/login'}>Logout</Link>
+                </>
+              ) : (
+                <Link className="text-secondary mb-2 mb-sm-0 ml-0 ml-sm-2" to="/login">Login</Link>
+              )
+          }
         </Nav>
         {props.user && (
           <Form inline>
             <FormControl value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} type="text" placeholder="Search" className="mr-sm-2" />
             <ListGroup className="position-absolute nav-options">
               {searchOptions.map((opt, i) => (
-                <ListGroupItem>
+                <ListGroupItem key={`search-${opt._id}`}>
                   <Link className="font-weight-bold text-dark" to={`/users/${opt._id}`}>
                     {opt.username}
                   </Link>

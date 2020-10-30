@@ -61,7 +61,7 @@ const Nibble = (props) => {
               )}
           </Card.Header>
           {n.contentAncestors.map((ca) => (
-            <ListGroupItem>
+            <ListGroupItem key={`${ca._id}-${n._id}`}>
               <UserLink linkedUser={ca} />
               {followMessage(ca, false)}
               <span className="d-block">{ca.content}</span>

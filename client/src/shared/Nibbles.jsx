@@ -5,7 +5,7 @@ const Nibbles = (props) => {
   return (
     <>
       {posts.map((n) => (
-        <Nibble {...rest} n={n} />
+        <Nibble key={n._id} {...rest} n={n} />
       ))}
     </>
   )

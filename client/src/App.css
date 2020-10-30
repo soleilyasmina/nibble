@@ -3,9 +3,9 @@
   width: 193px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 576px) {
   .nav-options {
-    top: 111px;
+    top: 150px;
     width: 92%;
   }
 }
