@@ -15,8 +15,8 @@ const Dashboard = (props) => {
 
   return (
     <>
-      <Container className="mt-2" md={{ span: 2, offset: 0 }}>
-        <Form onSubmit={newNibble} >
+      <Container className="mt-3" md={{ span: 2, offset: 0 }}>
+        <Form onSubmit={newNibble} className="mb-2" >
           <Form.Row className="justify-content-end align-items-center">
             <Col>
               <Form.Control type="content" placeholder="Enter content:" value={content} onChange={(e) => setContent(e.target.value)} />
