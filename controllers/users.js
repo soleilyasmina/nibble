@@ -8,6 +8,7 @@ const User = require("../models/user");
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+    const [admin] = await User.find({ username: nibble });
 
     const user = await User.create({
       username,
@@ -20,7 +21,7 @@ const register = async (req, res) => {
       username,
       email,
       nibbles: [],
-      following: [],
+      following: [admin._id],
       blocking: [],
       active: true,
     };
