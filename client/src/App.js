@@ -18,18 +18,23 @@ function App() {
 
   useEffect(() => {
     if (user) {
+      if (user.error) {
+        localStorage.removeItem('token');
+        history.push("/login");
+      } else {
       (async () => {
         setFollowing(await followingNibbles());
       })();
       if (!location.pathname.includes("/users/")) {
         history.push("/dashboard");
       }
+      }
     } else if (localStorage.getItem("token")) {
       (async () => {
         setUser(await verify());
       })();
     } else {
-      localStorage.clear();
+      localStorage.removeItem('token');
       history.push("/login");
     }
   }, [user, toggleFollowing, history]); // eslint-disable-line
