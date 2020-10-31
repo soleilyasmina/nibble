@@ -85,6 +85,7 @@ const newNibble = async (req, res) => {
     });
     const user = await User.findById(res.locals.user.id);
     user.nibbles.push(nibble.id);
+    await user.save();
     return res.status(201).json({ nibble });
   } catch (e) {
     return res.status(422).json({ error: e.message });
