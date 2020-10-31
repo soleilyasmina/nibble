@@ -8,7 +8,7 @@ const User = require("../models/user");
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    const [admin] = await User.find({ username: nibble });
+    const [admin] = await User.find({ username: "nibble" });
 
     const user = await User.create({
       username,
@@ -16,12 +16,15 @@ const register = async (req, res) => {
       password_digest: password,
     });
 
+    user.following.push(admin.id);
+    await user.save();
+
     const userInfo = {
       id: user._id,
       username,
       email,
       nibbles: [],
-      following: [admin._id],
+      following: [admin.id],
       blocking: [],
       active: true,
     };
