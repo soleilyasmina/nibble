@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button,  Col, Container, Form } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import { createNibble } from "../services/nibbles";
 import Nibbles from "../shared/Nibbles";
 
 const Dashboard = (props) => {
   const [content, setContent] = useState('');
+  const history = useHistory();
 
   const newNibble = async (e) => {
     e.preventDefault();
@@ -14,6 +16,12 @@ const Dashboard = (props) => {
       setContent('');
     }
   }
+
+  useEffect(() => {
+    if (!props.user || (props.user && !props.user.id)) {
+      history.push("/login");
+    }
+  }, [props.user, history]);
 
   return (
     <>
