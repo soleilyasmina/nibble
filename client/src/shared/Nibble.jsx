@@ -26,20 +26,19 @@ const Nibble = (props) => {
                   <UserLink linkedUser={n} />
                   <i className="ml-2 mr-2 fa fa-cookie-bite"></i>
                   <UserLink linkedUser={n.parent} />
-                  <Follow nibble={n.parent} user={props.user} />
+                  <Follow nibble={n.parent} user={props.user} setUser={props.setUser} />
                 </>
               )
               : (
                 <>
                   <UserLink linkedUser={n} />
-                  <Follow nibble={n} user={props.user} />
+                  <Follow nibble={n} user={props.user} setUser={props.setUser} />
                 </>
               )}
           </Card.Header>
           {n.contentAncestors.map((ca) => (
             <ListGroupItem key={`${ca._id}-${n._id}`}>
               <UserLink linkedUser={ca} />
-              <Follow nibble={ca} user={props.user} />
               <span className="d-block">{ca.content}</span>
             </ListGroupItem>
           ))}
