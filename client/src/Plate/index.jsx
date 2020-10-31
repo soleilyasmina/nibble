@@ -18,7 +18,7 @@ const Plate = (props) => {
       setNibbles(userNibbles);
       setUserInfo(newUserInfo);
     })();
-  }, [user_id]);
+  }, [props.user, user_id]);
 
   return (
     <Container className="mt-2" md={{ span: 2, offset: 0 }}>
@@ -27,7 +27,7 @@ const Plate = (props) => {
           <Card.Text className="d-inline font-weight-bold">
             {userInfo && userInfo.username}
           </Card.Text>
-          <Follow userId={user_id} user={props.user} />
+          <Follow userId={user_id} user={props.user} setUser={props.setUser}/>
           <Card.Text className="mb-0 font-italic"> 
             {userInfo && userInfo.followerCount} followers
           </Card.Text>

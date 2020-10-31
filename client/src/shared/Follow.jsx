@@ -20,7 +20,7 @@ const Follow = (props) => {
   }
   const following = props.user.following.includes(id);
   return (
-    <Card.Subtitle role="button" onClick={() => changeFollowStatus(following, nibble.user_id._id)} className={`mt-0 cursor-pointer d-inline ml-2 ${userId ? 'text-light' : 'text-muted'}`}>
+    <Card.Subtitle role="button" onClick={() => changeFollowStatus(following, id)} className={`mt-0 cursor-pointer d-inline ml-2 ${userId ? 'text-light' : 'text-muted'}`}>
       {following ? 'Unfollow' : 'Follow'}
     </Card.Subtitle>
   )
