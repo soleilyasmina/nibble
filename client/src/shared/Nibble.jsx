@@ -13,6 +13,7 @@ const Nibble = (props) => {
     e.preventDefault();
     await createBite({ content }, n._id);
     setContent('');
+    props.setAlerts(sa => [...sa, `You bit ${n.user_id.username}'s post!`])
     props.setToggleFollowing(prev => !prev);
   }
 
