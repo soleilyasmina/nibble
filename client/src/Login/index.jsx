@@ -30,7 +30,7 @@ const Login = (props) => {
     }
   }, [password, passwordConfirm]);
 
-  const isReady = !!username && !!password && password === passwordConfirm && email;
+  const isReady = !!username && !!password && (isLogin || (password === passwordConfirm && email));
 
   const login = async (e) => {
     e.preventDefault();
@@ -75,7 +75,7 @@ const Login = (props) => {
                     <Form.Control type="password" placeholder="Enter password:" value={password} onChange={(e) => setPassword(e.target.value)} />
                   </Form.Group>
                   { errorMessage && <Alert variant="warning" dismissible>{errorMessage}</Alert> }
-                  <Button variant="primary" type="submit">Login</Button>
+                  <Button variant="primary" type="submit" disabled={!isReady}>Login</Button>
                   <Button variant="secondary" className="ml-2" onClick={() => setIsLogin(false)}>Sign Up</Button>
                 </Form>
               </Col>
