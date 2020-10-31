@@ -22,7 +22,7 @@ const Plate = (props) => {
 
   return (
     <Container className="mt-2" md={{ span: 2, offset: 0 }}>
-      <Card bg="primary" text="light">
+      <Card className="mb-2" bg="primary" text="light">
         <Card.Header>
           <Card.Text className="d-inline font-weight-bold">
             {userInfo && userInfo.username}
