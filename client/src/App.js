@@ -29,6 +29,7 @@ function App() {
         setUser(await verify());
       })();
     } else {
+      localStorage.clear();
       history.push("/login");
     }
   }, [user, toggleFollowing, history]); // eslint-disable-line
