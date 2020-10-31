@@ -1,4 +1,5 @@
 import { useState } from "react";
+import moment from "moment";
 import { Button, Card, Col, Form, ListGroupItem, Row } from "react-bootstrap";
 import { createBite } from "../services/nibbles";
 import Follow from "./Follow.jsx";
@@ -14,6 +15,12 @@ const Nibble = (props) => {
     setContent('');
     props.setToggleFollowing(prev => !prev);
   }
+
+  const howLong = () => {
+    const now = new Date();
+    const then = new Date(n.createdAt);
+    return moment(then).from(now);
+  };
 
   return (
     <Row>
@@ -35,6 +42,9 @@ const Nibble = (props) => {
                   <Follow nibble={n} user={props.user} setUser={props.setUser} />
                 </>
               )}
+            <span className="ml-auto">
+            {howLong()}
+            </span>
           </Card.Header>
           {n.contentAncestors.map((ca) => (
             <ListGroupItem key={`${ca._id}-${n._id}`}>
@@ -52,6 +62,7 @@ const Nibble = (props) => {
               <span className="d-block">{n.content}</span>
             </ListGroupItem>
           }
+
           <Card.Footer>
             <Form onSubmit={newBite} >
               <Form.Row className="d-flex justify-content-end align-items-center">
