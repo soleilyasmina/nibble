@@ -41,7 +41,8 @@ const SiteNav = (props) => {
             props.user
               ? (
                 <>
-                  <Link className="text-secondary mb-2 mb-sm-0" to={`/users/${props.user && props.user.id}`}>My Plate</Link>
+                  <Link className="text-secondary mb-2 mb-sm-0" to="/dashboard">Dashboard</Link>
+                  <Link className="text-secondary mb-2 mb-sm-0 ml-0 ml-sm-2" to={`/users/${props.user && props.user.id}`}>My Plate</Link>
                   <Link className="text-secondary mb-2 mb-sm-0 ml-0 ml-sm-2" onClick={logout} to={'/login'}>Logout</Link>
                 </>
               ) : (
