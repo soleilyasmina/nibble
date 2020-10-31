@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, Container } from "react-bootstrap";
-import { motion } from "framer-motion";
+import { Container } from "react-bootstrap";
 import Nibble from "./Nibble.jsx";
 import Notification from "./Notification.jsx";
 
