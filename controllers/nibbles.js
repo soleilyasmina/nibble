@@ -6,7 +6,40 @@ const allNibbles = async (req, res) => {
   try {
     const nibbles = await Nibble.find({ user_id: req.params.user_id })
       .sort("-createdAt")
-      .limit(50)
+      .limit(20)
+      .populate({ path: "user_id", select: "username" })
+      .populate({
+        path: "contentAncestors",
+        populate: { path: "user_id", select: "username" },
+      })
+      .populate({
+        path: "parent",
+        populate: { path: "user_id", select: "username" },
+      })
+      .exec(async function (err, nibbles) {
+        const bites = async (nibble) => {
+          const nibs = await nibble.tree();
+          console.log(nibs.length);
+          return nibs.length;
+        };
+        const newNibbles = await Promise.all([
+          ...nibbles.map(async (nibble) => ({
+            ...nibble.toJSON(),
+            bites: await bites(nibble),
+          })),
+        ]);
+        return res.status(200).json({ nibbles: newNibbles });
+      });
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+};
+
+const lazyAllNibbles = async (req, res) => {
+  try {
+    const nibbles = await Nibble.find({ user_id: req.params.user_id, createdAt:  { "$lt": new Date(req.params.createdAt) }})
+      .sort("-createdAt")
+      .limit(20)
       .populate({ path: "user_id", select: "username" })
       .populate({
         path: "contentAncestors",
@@ -59,7 +92,7 @@ const followingNibbles = async (req, res) => {
       .where("user_id")
       .in([...user.following, id])
       .sort("-createdAt")
-      .limit(50)
+      .limit(20)
       .populate({ path: "user_id", select: "username" })
       .populate({
         path: "contentAncestors",
@@ -87,6 +120,49 @@ const followingNibbles = async (req, res) => {
     return res.status(500).json({ error: e.message });
   }
 };
+
+const lazyFollowingNibbles = async (req, res) => {
+  try {
+    const { id } = res.locals.user;
+    const user = await User.findById(id);
+    if (!user) {
+      res.status(404).json({ error: "No user found!" });
+    }
+    const nibbles = await Nibble
+      .find({ 
+        createdAt: { "$lt": new Date(req.params.createdAt) }
+      })
+      .where("user_id")
+      .in([...user.following, id])
+      .sort("-createdAt")
+      .limit(20)
+      .populate({ path: "user_id", select: "username" })
+      .populate({
+        path: "contentAncestors",
+        populate: { path: "user_id", select: "username" },
+      })
+      .populate({
+        path: "parent",
+        populate: { path: "user_id", select: "username" },
+      })
+      .exec(async function (err, nibbles) {
+        const bites = async (nibble) => {
+          const nibs = await nibble.tree();
+          console.log(nibs.length);
+          return nibs.length;
+        };
+        const newNibbles = await Promise.all([
+          ...nibbles.map(async (nibble) => ({
+            ...nibble.toJSON(),
+            bites: await bites(nibble),
+          })),
+        ]);
+        return res.status(200).json({ nibbles: newNibbles });
+      });
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+}
 
 // GET /nibbles/:nibble_id
 const oneNibble = async (req, res) => {
@@ -184,8 +260,10 @@ const deleteNibble = async (req, res) => {
 
 module.exports = {
   allNibbles,
+  lazyAllNibbles,
   myNibbles,
   followingNibbles,
+  lazyFollowingNibbles,
   oneNibble,
   newNibble,
   newBite,
