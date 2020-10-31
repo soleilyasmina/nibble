@@ -24,6 +24,14 @@ const SiteNav = (props) => {
     }
   }, [searchQuery]);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      behavior: 'smooth',
+      left: 0,
+      top: 0,
+    });
+  }
+
   const logout = async () => {
     localStorage.removeItem('token');
     props.setUser(null);
@@ -33,7 +41,7 @@ const SiteNav = (props) => {
 
   return (
     <Navbar sticky="top" bg="light" expand="sm" expanded={expanded} onToggle={(e) => setExpanded(e)}>
-      <Navbar.Brand><Link className="text-dark" to={homeLink}>Nibble</Link></Navbar.Brand>
+      <Navbar.Brand><Link className="text-dark" onClick={scrollToTop} to={homeLink}>Nibble</Link></Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
         <Nav className="mr-auto">
