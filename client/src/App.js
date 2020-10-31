@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
-import { Route, useHistory, useLocation } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 import "./App.css";
 import { followingNibbles } from "./services/nibbles";
 import { verify } from "./services/users";
@@ -14,10 +14,9 @@ function App() {
   const [following, setFollowing] = useState([]);
   const [toggleFollowing, setToggleFollowing] = useState(false);
   const history = useHistory();
-  const location = useLocation();
 
   useEffect(() => {
-    if (user) {
+    if (user && user.id) {
       (async () => {
         setFollowing(await followingNibbles());
       })();
@@ -42,7 +41,7 @@ function App() {
       <SiteNav user={user} setUser={setUser} />
       <Container>
         <Route path="/login">
-          <Login setUser={setUser} />
+          <Login user={user} setUser={setUser} />
         </Route>
         <Route path="/dashboard">
           <Dashboard

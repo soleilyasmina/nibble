@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { api } from '../services';
@@ -10,6 +10,12 @@ const Login = (props) => {
   const [isLogin, setIsLogin] = useState(true);
 
   const history = useHistory();
+
+  useEffect(() => {
+    if (props.user && props.user.id) {
+      history.push("/dashboard");
+    }
+  }, [props.user, history]);
 
   const login = async (e) => {
     e.preventDefault();
