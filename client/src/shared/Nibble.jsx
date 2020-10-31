@@ -43,9 +43,7 @@ const Nibble = (props) => {
                   <Follow nibble={n} user={props.user} setUser={props.setUser} />
                 </>
               )}
-            <span className="ml-auto">
-            {howLong()}
-            </span>
+
           </Card.Header>
           {n.contentAncestors.map((ca) => (
             <ListGroupItem key={`${ca._id}-${n._id}`}>
@@ -75,6 +73,9 @@ const Nibble = (props) => {
                 </Col>
               </Form.Row>
             </Form>
+          </Card.Footer>
+          <Card.Footer className="d-flex justify-content-end">
+              {howLong()}
           </Card.Footer>
         </Card>
       </Col>
