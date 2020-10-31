@@ -21,9 +21,6 @@ function App() {
       (async () => {
         setFollowing(await followingNibbles());
       })();
-      if (!location.pathname.includes("/users/")) {
-        history.push("/dashboard");
-      }
     } else if (localStorage.getItem("token")) {
       (async () => {
         const newUser = await verify();
