@@ -74,8 +74,13 @@ const Nibble = (props) => {
               </Form.Row>
             </Form>
           </Card.Footer>
-          <Card.Footer className="d-flex justify-content-end">
-              {howLong()}
+          <Card.Footer className="d-flex justify-content-between">
+            <span>
+              {n.bites} {n.bites === 1 ? 'bite' : 'bites'}
+            </span>
+            <span>
+            {howLong()}
+            </span>
           </Card.Footer>
         </Card>
       </Col>
