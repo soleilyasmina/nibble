@@ -5,7 +5,7 @@
 
 @media screen and (max-width: 576px) {
   .nav-options {
-    top: 150px;
-    width: 92%;
+    top: 183px;
+    width: calc(100vw - 32px);
   }
 }
