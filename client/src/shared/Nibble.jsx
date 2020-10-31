@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Card, Col, Form, ListGroupItem, Row } from "react-bootstrap";
-import { follow, unfollow } from "../services/follows";
 import { createBite } from "../services/nibbles";
+import Follow from "./Follow.jsx";
 import UserLink from "./UserLink.jsx";
 
 const Nibble = (props) => {
@@ -15,30 +15,6 @@ const Nibble = (props) => {
     props.setToggleFollowing(prev => !prev);
   }
 
-  const changeFollowStatus = async (following, user_id) => {
-    if (following) {
-      const user = await unfollow(user_id);
-      console.log(user)
-      props.setUser(user);
-    } else {
-      const user = await follow(user_id);
-      props.setUser(user);
-    }
-  }
-
-  const followMessage = (nibble, top) => {
-    if (props.user.id === nibble.user_id._id) {
-      return null;
-    } else {
-      const following = props.user.following.includes(nibble.user_id._id);
-      return (
-        <Card.Subtitle onClick={() => changeFollowStatus(following, nibble.user_id._id)} className={`mt-0 ml-2 d-inline text-muted cursor-pointer`}>
-          {following ? 'Unfollow' : 'Follow'}
-        </Card.Subtitle>
-      )
-    }
-  }
-
   return (
     <Row>
       <Col>
@@ -47,23 +23,23 @@ const Nibble = (props) => {
             {n.parent
               ? (
                 <>
-
                   <UserLink linkedUser={n} />
                   <i className="ml-2 mr-2 fa fa-cookie-bite"></i>
                   <UserLink linkedUser={n.parent} />
+                  <Follow nibble={n.parent} user={props.user} />
                 </>
               )
               : (
                 <>
                   <UserLink linkedUser={n} />
-                  {followMessage(n, true)}
+                  <Follow nibble={n} user={props.user} />
                 </>
               )}
           </Card.Header>
           {n.contentAncestors.map((ca) => (
             <ListGroupItem key={`${ca._id}-${n._id}`}>
               <UserLink linkedUser={ca} />
-              {followMessage(ca, false)}
+              <Follow nibble={ca} user={props.user} />
               <span className="d-block">{ca.content}</span>
             </ListGroupItem>
           ))}

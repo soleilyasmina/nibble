@@ -1,6 +1,6 @@
 const User = require('../models/user');
 
-const createUserInfoAndPayload = (user) => ({
+const createUserInfoAndPayload = async (user) => ({
   payload: {
     id: user._id,
     email: user.email,
@@ -14,6 +14,7 @@ const createUserInfoAndPayload = (user) => ({
     username: user.username,
     following: user.following,
     blocking: user.blocking,
+    followerCount: await user.followers(),
   },
 });
 

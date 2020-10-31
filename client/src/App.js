@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
-import { Route, useHistory } from "react-router-dom";
+import { Route, useHistory, useLocation } from "react-router-dom";
 import "./App.css";
 import { followingNibbles } from "./services/nibbles";
 import { verify } from "./services/users";
@@ -14,21 +14,24 @@ function App() {
   const [following, setFollowing] = useState([]);
   const [toggleFollowing, setToggleFollowing] = useState(false);
   const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
     if (user) {
       (async () => {
         setFollowing(await followingNibbles());
       })();
-      history.push('/dashboard')
-    } else if (localStorage.getItem('token')) {
+      if (!location.pathname.includes("/users/")) {
+        history.push("/dashboard");
+      }
+    } else if (localStorage.getItem("token")) {
       (async () => {
         setUser(await verify());
       })();
     } else {
-      history.push('/login');
+      history.push("/login");
     }
-  }, [user, toggleFollowing, history]);
+  }, [user, toggleFollowing, history]); // eslint-disable-line
 
   return (
     <div className="App">
@@ -38,10 +41,19 @@ function App() {
           <Login setUser={setUser} />
         </Route>
         <Route path="/dashboard">
-          <Dashboard user={user} setUser={setUser} following={following} setToggleFollowing={setToggleFollowing} /> 
+          <Dashboard
+            user={user}
+            setUser={setUser}
+            following={following}
+            setToggleFollowing={setToggleFollowing}
+          />
         </Route>
         <Route path="/users/:user_id">
-          <Plate user={user} setUser={setUser} setToggleFollowing={setToggleFollowing} />
+          <Plate
+            user={user}
+            setUser={setUser}
+            setToggleFollowing={setToggleFollowing}
+          />
         </Route>
       </Container>
     </div>

@@ -1,5 +1,5 @@
-const User = require('../models/user');
-const { createUserInfoAndPayload } = require('../helpers/user');
+const User = require("../models/user");
+const { createUserInfoAndPayload } = require("../helpers/user");
 
 const follow = async (req, res) => {
   try {
@@ -8,18 +8,23 @@ const follow = async (req, res) => {
     const follower = await User.findById(id);
     const following = await User.findById(user_id);
     if (!following) {
-      return res.status(404).json({ error: 'No user found!' });
+      return res.status(404).json({ error: "No user found!" });
     }
     if (follower.following.includes(user_id)) {
-      return res.status(400).json({ error: 'Already following!' });
+      return res.status(400).json({ error: "Already following!" });
     }
-    await User.findByIdAndUpdate(id, { following: [...follower.following, user_id] }, { new: true }, (err, user) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
+    await User.findByIdAndUpdate(
+      id,
+      { following: [...follower.following, user_id] },
+      { new: true },
+      async (err, user) => {
+        if (err) {
+          res.status(500).json({ error: err.message });
+        }
+        const { userInfo } = await createUserInfoAndPayload(user);
+        return res.status(200).json({ user: userInfo });
       }
-      const { userInfo } = createUserInfoAndPayload(user);
-      return res.status(200).json({ user: userInfo });
-    });
+    );
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
@@ -32,18 +37,23 @@ const unfollow = async (req, res) => {
     const follower = await User.findById(id);
     const following = await User.findById(user_id);
     if (!following) {
-      return res.status(404).json({ error: 'No user found!' });
+      return res.status(404).json({ error: "No user found!" });
     }
     if (!follower.following.includes(user_id)) {
-      return res.status(400).json({ error: 'Not following!' });
+      return res.status(400).json({ error: "Not following!" });
     }
-    await User.findByIdAndUpdate(id, { following: follower.following.filter((f) => f.toString() !== user_id) }, { new: true }, (err, user) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
+    await User.findByIdAndUpdate(
+      id,
+      { following: follower.following.filter((f) => f.toString() !== user_id) },
+      { new: true },
+      async (err, user) => {
+        if (err) {
+          res.status(500).json({ error: err.message });
+        }
+        const { userInfo } = await createUserInfoAndPayload(user);
+        return res.status(200).json({ user: userInfo });
       }
-      const { userInfo } = createUserInfoAndPayload(user);
-      return res.status(200).json({ user: userInfo });
-    });
+    );
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
@@ -56,24 +66,29 @@ const block = async (req, res) => {
     const blocker = await User.findById(id);
     const blocking = await User.findById(user_id);
     if (!blocking) {
-      return res.status(404).json({ error: 'No user found!' });
+      return res.status(404).json({ error: "No user found!" });
     }
     if (blocker.blocking.includes(user_id)) {
-      return res.status(400).json({ error: 'Already blocked!' });
+      return res.status(400).json({ error: "Already blocked!" });
     }
     await User.findById(user_id, {
       following: blocking.following.filter((f) => f.toString() !== user_id),
     });
-    await User.findByIdAndUpdate(id, {
-      blocking: [...blocker.blocking, user_id],
-      following: blocker.following.filter((f) => f.toString() !== user_id), 
-    }, { new: true }, (err, user) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
+    await User.findByIdAndUpdate(
+      id,
+      {
+        blocking: [...blocker.blocking, user_id],
+        following: blocker.following.filter((f) => f.toString() !== user_id),
+      },
+      { new: true },
+      async (err, user) => {
+        if (err) {
+          res.status(500).json({ error: err.message });
+        }
+        const { userInfo } = await createUserInfoAndPayload(user);
+        return res.status(200).json({ user: userInfo });
       }
-      const { userInfo } = createUserInfoAndPayload(user);
-      return res.status(200).json({ user: userInfo });
-    });
+    );
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
@@ -86,18 +101,23 @@ const unblock = async (req, res) => {
     const blocker = await User.findById(id);
     const blocking = await User.findById(user_id);
     if (!blocking) {
-      return res.status(404).json({ error: 'No user found!' });
+      return res.status(404).json({ error: "No user found!" });
     }
     if (!blocker.blocking.includes(user_id)) {
-      return res.status(400).json({ error: 'Not blocked!' });
+      return res.status(400).json({ error: "Not blocked!" });
     }
-    await User.findByIdAndUpdate(id, { blocking: blocker.blocking.filter((b) => b.toString() !== user_id) }, { new: true }, (err, user) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
+    await User.findByIdAndUpdate(
+      id,
+      { blocking: blocker.blocking.filter((b) => b.toString() !== user_id) },
+      { new: true },
+      async (err, user) => {
+        if (err) {
+          res.status(500).json({ error: err.message });
+        }
+        const { userInfo } = await createUserInfoAndPayload(user);
+        return res.status(200).json({ user: userInfo });
       }
-      const { userInfo } = createUserInfoAndPayload(user);
-      return res.status(200).json({ user: userInfo });
-    });
+    );
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
@@ -106,12 +126,34 @@ const unblock = async (req, res) => {
 const search = async (req, res) => {
   try {
     const { query } = req.body;
-    const users = await User.find({ username: new RegExp(query) }, { id: 1, username: 1 }).limit(4);
+    const users = await User.find(
+      { username: new RegExp(query) },
+      { id: 1, username: 1 }
+    ).limit(4);
     return res.status(200).json({ users });
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
-}
+};
+
+const userInfo = async (req, res) => {
+  try {
+    const [foundUser] = await User.find(
+      { _id: req.params.user_id },
+      { _id: 1, username: 1, nibbles: 1 }
+    );
+    const followerCount = await foundUser.followers();
+    const user = {
+      id: foundUser._id,
+      username: foundUser.username,
+      nibbleCount: foundUser.nibbles.length,
+      followerCount: followerCount.length,
+    } 
+    return res.status(200).json({ user });
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 module.exports = {
   follow,
@@ -119,4 +161,5 @@ module.exports = {
   block,
   unblock,
   search,
+  userInfo,
 };
