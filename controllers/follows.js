@@ -140,18 +140,19 @@ const userInfo = async (req, res) => {
   try {
     const [foundUser] = await User.find(
       { _id: req.params.user_id },
-      { _id: 1, username: 1, nibbles: 1 }
+      { _id: 1, username: 1, nibbles: 1, following: 1 }
     );
     const followerCount = await foundUser.followers();
     const user = {
       id: foundUser._id,
       username: foundUser.username,
       nibbleCount: foundUser.nibbles.length,
+      followingCount: foundUser.following.length,
       followerCount: followerCount.length,
     } 
     return res.status(200).json({ user });
   } catch (e) {
-    console.log(e);
+    return res.status(500).json({ error: e.message });
   }
 };
 

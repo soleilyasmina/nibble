@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import Nibble from "./Nibble.jsx";
 import Notification from "./Notification.jsx";
+import Observer from "./Observer.jsx";
 
 const Nibbles = (props) => {
   const [alerts, setAlerts] = useState([]);
@@ -13,8 +14,6 @@ const Nibbles = (props) => {
         prevAlerts.shift();
         return [...prevAlerts];
       }), 4000);
-    } else {
-      console.log('hello')
     }
   }, [alerts]);
 
@@ -28,6 +27,7 @@ const Nibbles = (props) => {
           <Notification alert={alert} /> 
         ))}
       </Container>
+      {!!posts.length && <Observer cb={props.cb}/> }
     </>
   )
 }

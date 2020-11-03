@@ -25,9 +25,27 @@ export const followingNibbles = async () => {
   }
 };
 
+export const lazyFollowingNibbles = async (last) => {
+  try {
+    const resp = await api.get(`/nibbles/following/lazy/${last.createdAt}`, createHeaders());
+    return resp.data.nibbles;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export const allNibbles = async (user_id) => {
   try {
     const resp = await api.get(`/nibbles/users/${user_id}`, createHeaders());
+    return resp.data.nibbles;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export const lazyAllNibbles = async (last) => {
+  try {
+    const resp = await api.get(`/nibbles/users/${last.user_id._id}/lazy/${last.createdAt}`, createHeaders());
     return resp.data.nibbles;
   } catch (e) {
     console.log(e);

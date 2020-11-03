@@ -5,7 +5,6 @@ const Follow = (props) => {
   const changeFollowStatus = async (following, user_id) => {
     if (following) {
       const user = await unfollow(user_id);
-      console.log(user)
       props.setUser(user);
     } else {
       const user = await follow(user_id);

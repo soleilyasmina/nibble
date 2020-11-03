@@ -3,6 +3,15 @@
   width: 193px;
 }
 
+.observer {
+  width: 100%;
+  height: 100px;
+}
+
+.App {
+  min-height: 100vh;
+}
+
 @media screen and (max-width: 576px) {
   .nav-options {
     top: 183px;

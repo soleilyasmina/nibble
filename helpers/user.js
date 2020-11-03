@@ -14,7 +14,7 @@ const createUserInfoAndPayload = async (user) => ({
     username: user.username,
     following: user.following,
     blocking: user.blocking,
-    followerCount: await user.followers(),
+    followers: await user.followers(),
   },
 });
 

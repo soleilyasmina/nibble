@@ -37,7 +37,7 @@ const Dashboard = (props) => {
           </Form.Row>
         </Form>
 
-        <Nibbles posts={props.following} user={props.user} setUser={props.setUser} setToggleFollowing={props.setToggleFollowing}/>
+        <Nibbles cb={props.cb} posts={props.following} user={props.user} setUser={props.setUser} setToggleFollowing={props.setToggleFollowing}/>
       </Container>
     </>
   )

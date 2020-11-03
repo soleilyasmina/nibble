@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Route, useHistory } from "react-router-dom";
 import "./App.css";
-import { followingNibbles } from "./services/nibbles";
+import { followingNibbles, lazyFollowingNibbles } from "./services/nibbles";
 import { verify } from "./services/users";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
@@ -13,6 +13,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [following, setFollowing] = useState([]);
   const [toggleFollowing, setToggleFollowing] = useState(false);
+  const [lazyLoads, setLazyLoads] = useState(0);
   const history = useHistory();
 
   useEffect(() => {
@@ -36,6 +37,18 @@ function App() {
     }
   }, [user, toggleFollowing, history]); // eslint-disable-line
 
+  useEffect(() => {
+    const lazyLoadFollowing = async () => {
+      if (following.length && following.length % 20 === 0 && lazyLoads >= 1) {
+        const nibbles = await lazyFollowingNibbles(
+          following[following.length - 1]
+        );
+        setFollowing(fol => [...fol, ...nibbles]);
+      }
+    };
+    lazyLoadFollowing();
+  }, [lazyLoads]); // eslint-disable-line
+
   return (
     <div className="App">
       <SiteNav user={user} setUser={setUser} />
@@ -49,6 +62,7 @@ function App() {
             setUser={setUser}
             following={following}
             setToggleFollowing={setToggleFollowing}
+            cb={() => setLazyLoads(ll => ll + 1)}
           />
         </Route>
         <Route path="/users/:user_id">
