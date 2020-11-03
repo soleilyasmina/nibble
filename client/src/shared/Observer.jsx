@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const Observer = (props) => {
+const Observer = ({ cb }) => {
 
   useEffect(() => {
     const options = {
@@ -8,9 +8,9 @@ const Observer = (props) => {
       threshold: 1.0,
     };
     const loader = document.querySelector('.observer');
-    const newObserver = new IntersectionObserver(props.cb, options);
+    const newObserver = new IntersectionObserver(cb, options);
     newObserver.observe(loader);
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <div className="observer"></div>

@@ -6,7 +6,6 @@ import Observer from "./Observer.jsx";
 
 const Nibbles = (props) => {
   const [alerts, setAlerts] = useState([]);
-  const [stopLoad, toggleStopLoad] = useState(false);
   const { posts, ...rest } = props;
 
   useEffect(() => {
@@ -28,7 +27,7 @@ const Nibbles = (props) => {
           <Notification alert={alert} /> 
         ))}
       </Container>
-      {!!posts.length && !stopLoad && <Observer cb={props.cb}/> }
+      {!!posts.length && <Observer cb={props.cb}/> }
     </>
   )
 }

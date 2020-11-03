@@ -47,7 +47,7 @@ function App() {
       }
     };
     lazyLoadFollowing();
-  }, [lazyLoads]);
+  }, [lazyLoads]); // eslint-disable-line
 
   return (
     <div className="App">
