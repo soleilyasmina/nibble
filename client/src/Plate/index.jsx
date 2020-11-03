@@ -23,7 +23,7 @@ const Plate = (props) => {
 
   useEffect(() => {
     const lazyLoad = async () => {
-      if (nibbles.length && nibbles.length % 20 === 0 &&!!lazyLoads) {
+      if (nibbles.length && nibbles.length % 10 === 0 &&!!lazyLoads) {
         const newNibbles = await lazyAllNibbles(
           nibbles[nibbles.length - 1]
         );
