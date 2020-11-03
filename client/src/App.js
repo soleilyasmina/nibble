@@ -39,7 +39,7 @@ function App() {
 
   useEffect(() => {
     const lazyLoadFollowing = async () => {
-      if (following.length && following.length % 20 === 0 && lazyLoads >= 1) {
+      if (following.length && following.length % 10 === 0 && lazyLoads >= 1) {
         const nibbles = await lazyFollowingNibbles(
           following[following.length - 1]
         );

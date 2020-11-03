@@ -6,7 +6,7 @@ const allNibbles = async (req, res) => {
   try {
     const nibbles = await Nibble.find({ user_id: req.params.user_id })
       .sort("-createdAt")
-      .limit(20)
+      .limit(10)
       .populate({ path: "user_id", select: "username" })
       .populate({
         path: "contentAncestors",
@@ -42,7 +42,7 @@ const lazyAllNibbles = async (req, res) => {
       .where("createdAt")
       .lt(new Date(req.params.createdAt))
       .sort("-createdAt")
-      .limit(20)
+      .limit(10)
       .populate({ path: "user_id", select: "username" })
       .populate({
         path: "contentAncestors",
@@ -94,7 +94,7 @@ const followingNibbles = async (req, res) => {
       .where("user_id")
       .in([...user.following, id])
       .sort("-createdAt")
-      .limit(20)
+      .limit(10)
       .populate({ path: "user_id", select: "username" })
       .populate({
         path: "contentAncestors",
@@ -135,7 +135,7 @@ const lazyFollowingNibbles = async (req, res) => {
       .where("createdAt")
       .lt(new Date(req.params.createdAt))
       .sort("-createdAt")
-      .limit(20)
+      .limit(10)
       .populate({ path: "user_id", select: "username" })
       .populate({
         path: "contentAncestors",
