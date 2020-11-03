@@ -19,7 +19,6 @@ const allNibbles = async (req, res) => {
       .exec(async function (err, nibbles) {
         const bites = async (nibble) => {
           const nibs = await nibble.tree();
-          console.log(nibs.length);
           return nibs.length;
         };
         const newNibbles = await Promise.all([
@@ -37,7 +36,11 @@ const allNibbles = async (req, res) => {
 
 const lazyAllNibbles = async (req, res) => {
   try {
-    const nibbles = await Nibble.find({ user_id: req.params.user_id, createdAt:  { "$lt": new Date(req.params.createdAt) }})
+    const nibbles = await Nibble
+      .where("user_id")
+      .in([req.params.user_id])
+      .where("createdAt")
+      .lt(new Date(req.params.createdAt))
       .sort("-createdAt")
       .limit(20)
       .populate({ path: "user_id", select: "username" })
@@ -52,7 +55,6 @@ const lazyAllNibbles = async (req, res) => {
       .exec(async function (err, nibbles) {
         const bites = async (nibble) => {
           const nibs = await nibble.tree();
-          console.log(nibs.length);
           return nibs.length;
         };
         const newNibbles = await Promise.all([
@@ -105,7 +107,6 @@ const followingNibbles = async (req, res) => {
       .exec(async function (err, nibbles) {
         const bites = async (nibble) => {
           const nibs = await nibble.tree();
-          console.log(nibs.length);
           return nibs.length;
         };
         const newNibbles = await Promise.all([
@@ -129,11 +130,10 @@ const lazyFollowingNibbles = async (req, res) => {
       res.status(404).json({ error: "No user found!" });
     }
     const nibbles = await Nibble
-      .find({ 
-        createdAt: { "$lt": new Date(req.params.createdAt) }
-      })
       .where("user_id")
       .in([...user.following, id])
+      .where("createdAt")
+      .lt(new Date(req.params.createdAt))
       .sort("-createdAt")
       .limit(20)
       .populate({ path: "user_id", select: "username" })
@@ -148,7 +148,6 @@ const lazyFollowingNibbles = async (req, res) => {
       .exec(async function (err, nibbles) {
         const bites = async (nibble) => {
           const nibs = await nibble.tree();
-          console.log(nibs.length);
           return nibs.length;
         };
         const newNibbles = await Promise.all([
