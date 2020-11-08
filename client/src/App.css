@@ -12,6 +12,23 @@
   min-height: 100vh;
 }
 
+.bites {
+  bottom: 47px;
+  left: -1px;
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+.bites::-webkit-scrollbar {
+  width: 10px;
+  background-color: #eeeeee;
+  text-shadow: 2px 2px 2px grey;
+}
+
+.bites::-webkit-scrollbar-thumb {
+  background-color: #218838;
+}
+
 @media screen and (max-width: 576px) {
   .nav-options {
     top: 183px;

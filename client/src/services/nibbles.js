@@ -60,3 +60,12 @@ export const myNibbles = async () => {
     console.log(e);
   }
 }
+
+export const oneNibble = async (id) => {
+  try {
+    const resp = await api.get(`/nibbles/${id}`, createHeaders());
+    return resp.data;
+  } catch (e) {
+    console.log(e);
+  }
+}

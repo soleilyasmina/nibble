@@ -2,11 +2,13 @@ import { useState } from "react";
 import moment from "moment";
 import { Button, Card, Col, Form, ListGroupItem, Row } from "react-bootstrap";
 import { createBite } from "../services/nibbles";
+import Bites from "./Bites.jsx";
 import Follow from "./Follow.jsx";
 import UserLink from "./UserLink.jsx";
 
 const Nibble = (props) => {
   const [content, setContent] = useState('');
+  const [show, setShow] = useState(false);
   const { n } = props;
 
   const newBite = async (e) => {
@@ -22,6 +24,12 @@ const Nibble = (props) => {
     const then = new Date(n.createdAt);
     return moment(then).from(now);
   };
+
+  const shouldClose = (e) => {
+    if (e.relatedTarget === null || !e.relatedTarget.dataset.link) {
+      setShow(false);
+    }
+  }
 
   return (
     <Row>
@@ -74,12 +82,13 @@ const Nibble = (props) => {
               </Form.Row>
             </Form>
           </Card.Footer>
-          <Card.Footer className="d-flex justify-content-between">
-            <span>
+          <Card.Footer className="d-flex justify-content-between align-items-center">
+            {show && <Bites nibbleId={n.id} />}
+            <Button variant="success" onFocus={() => setShow(true)} onBlur={shouldClose}>
               {n.bites} {n.bites === 1 ? 'bite' : 'bites'}
-            </span>
+            </Button>
             <span>
-            {howLong()}
+              {howLong()}
             </span>
           </Card.Footer>
         </Card>
