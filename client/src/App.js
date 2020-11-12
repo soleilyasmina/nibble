@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
-import { Route, useHistory } from "react-router-dom";
+import { Route, useHistory, useLocation } from "react-router-dom";
 import "./App.css";
 import { followingNibbles, lazyFollowingNibbles } from "./services/nibbles";
 import { verify } from "./services/users";
@@ -15,6 +15,7 @@ function App() {
   const [toggleFollowing, setToggleFollowing] = useState(false);
   const [lazyLoads, setLazyLoads] = useState(0);
   const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
     if (user && user.id) {
@@ -36,6 +37,10 @@ function App() {
       history.push("/login");
     }
   }, [user, toggleFollowing, history]); // eslint-disable-line
+
+  useEffect(() => {
+    window.scrollTo({ left: 0, top: 0 });
+  }, [location]);
 
   useEffect(() => {
     const lazyLoadFollowing = async () => {

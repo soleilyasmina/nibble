@@ -29,8 +29,16 @@ nibbleSchema.methods.tree = function tree() {
     source = this.ancestors[0]._id;
   }
   return model("nibbles")
-    .find({ ancestors: source }, { id: 1, user_id: 1 })
+    .find({ ancestors: source }, { id: 1, user_id: 1, parent: 1 })
     .populate("user_id", { id: 1, username: 1 })
+    .populate({
+      path: "parent",
+      select: { username: 1, id: 1, user_id: 1 },
+      populate: {
+        path: "user_id",
+        select: { username: 1 }
+      }
+    })
     .lean();
 };
 
