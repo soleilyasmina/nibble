@@ -85,7 +85,7 @@ const Nibble = (props) => {
           <Card.Footer className="d-flex justify-content-between align-items-center">
             {show && <Bites nibbleId={n.id} />}
             <Button variant="success" onFocus={() => setShow(true)} onBlur={shouldClose}>
-              {n.bites} {n.bites === 1 ? 'bite' : 'bites'}
+              {n.bites} <i className="ml-2 mr-2 fa fa-cookie-bite"></i>
             </Button>
             <span>
               {howLong()}
